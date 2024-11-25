@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link href="styles.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="botoes">
+        <button id="carregar">Carregar Cervejas</button>
+        <button id="ordenar">Ordenar</button>
+        <button id="embaralhar">Embaralhar</button>
+    </div>
+
+    <div id="cervejasDiv"></div>
+</body>
+
+<script>
+    function criarTabela(itens, nomesPropriedades, idDiv) {
+        const div = document.getElementById(idDiv);
+        const cabecalhos = nomesPropriedades.map(nomePropriedade => nomePropriedade.charAt(0).toUpperCase() + nomePropriedade.slice(1));
+        const linhaCabecalho = `<tr>${cabecalhos.map(cabecalho => `<th>${cabecalho}</th>`).join("")}</tr>`;
+
+        const itensHtml = itens.map(item => {
+            const celulas = nomesPropriedades.map(nomePropriedade => {
+                const valor = item[nomePropriedade] || "";
+                return `<td>${valor}</td>`;
+            });
+            return `<tr>${celulas.join("")}</tr>`;
+        });
+
+        div.innerHTML = `<table>${linhaCabecalho}${itensHtml.join("\n")}</table>`;
+    }
+
+    function buscarDados(url = "https://random-data-api.com/api/v2/beers?size=3") {
+        return fetch(url)
+            .then(resposta => {
+                if (!resposta.ok) {
+                    throw new Error("A resposta da rede não foi bem-sucedida");
+                }
+                return resposta.json();
+            })
+            .catch(erro => {
+                console.error("Erro ao buscar os dados:", erro);
+                throw erro;
+            });
+    }
+
+    function carregarCervejas() {
+        buscarDados()
+            .then(cervejas => {
+                criarTabela(cervejas, ["name", "alcohol", "style", "ibu", "brand"], "cervejasDiv");
+            })
+            .catch(erro => {
+                document.getElementById("cervejasDiv").innerHTML = "Ops...";
+            });
+    }
+
+    function ordenarCervejas() {
+        buscarDados()
+            .then(cervejas => {
+                cervejas.sort((a, b) => a.name.localeCompare(b.name));
+                criarTabela(cervejas, ["name", "alcohol", "style", "ibu", "brand"], "cervejasDiv");
+            })
+            .catch(erro => {
+                document.getElementById("cervejasDiv").innerHTML = "Ops...";
+            });
+    }
+
+    function embaralharCervejas() {
+        buscarDados()
+            .then(cervejas => {
+                const cervejasEmbaralhadas = [...cervejas].sort(() => Math.random() - 0.5); // Embaralhamento de Fisher-Yates
+                criarTabela(cervejasEmbaralhadas, ["name", "alcohol", "style", "ibu", "brand"], "cervejasDiv");
+            })
+            .catch(erro => {
+                document.getElementById("cervejasDiv").innerHTML = "Ops...";
+            });
+    }
+
+    const botaoCarregar = document.getElementById("carregar");
+    botaoCarregar.addEventListener("click", carregarCervejas);
+
+    const botaoOrdenar = document.getElementById("ordenar");
+    botaoOrdenar.addEventListener("click", ordenarCervejas);
+
+    const botaoEmbaralhar = document.getElementById("embaralhar");
+    botaoEmbaralhar.addEventListener("click", embaralharCervejas);
+
+</script>
+
+</html>
