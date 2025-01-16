@@ -1,0 +1,55 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #dfe6e9; 
+    color: #2d3436; 
+}
+
+#app {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #b2bec3; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+#cabecalho {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #0984e3; 
+}
+
+#tabela {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#tabela th,
+#tabela td {
+    padding: 10px;
+    border-bottom: 1px solid #bdc3c7; 
+}
+
+#tabela th {
+    background-color: #dfe6e9; 
+}
+
+#botaoCarregar {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #0984e3; 
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#botaoCarregar:hover {
+    background-color: #0568b0; 
+}
